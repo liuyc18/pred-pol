@@ -1,0 +1,4 @@
+- Predictive Policing: The Role of Crime Forecasting in Law Enforcement Operations
+    - https://www-jstor-org.libproxy1.nus.edu.sg/stable/10.7249/j.ctt4cgdcz
+- Predict and surveil: Data, discretion, and the future of policing.
+    - https://linc.nus.edu.sg/record=b4289579
