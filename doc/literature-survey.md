@@ -17,3 +17,30 @@ PredPol uses a straightforward statistical approach assuming that crime event fo
 ## Feature Engineering Techniques
 
 ## Evaluation Metrics and Their Appropriateness
+
+## Definition&Comparison between 4 main topics
+1. 🌍 Predicting Places of Increased Crime Risk
+2. 👤 Predicting Potential Offenders
+3. 👥 Predicting Group/Population Crime Patterns
+4. ⚠ Predicting Potential Victims
+
+| Topic | Unit of Analysis | Key Driver | Ethical Risk |
+| --- | --- | --- | --- |
+| 1. Places | Geography/Time | Environmental factors | Over-policing marginalized areas |
+| 2. Offenders | Individuals | Behavioral/demographic traits | Racial/profiling bias |
+| 3. Group Patterns | Networks/Populations | Social/economic interactions | Stereotyping demographic groups |
+| 4. Victims | Individuals/Groups | Vulnerability/exposure | Privacy violations |
+### Column-to-Topic Mapping & Possible Feature Engineering 
+
+| Column                            | Relevant Topics          | Feature Engineering Priorities                                               | Key Concerns/Limitations                              |
+|-----------------------------------|--------------------------|------------------------------------------------------------------------------|------------------------------------------------------|
+| **Date**                           | 1 (Places), 3 (Group Patterns) | Temporal features: `hour`, `day_of_week`, `month`, `holiday_flag`, `time_since_last_crime` | Seasonality effects (e.g., summer crime spikes).      |
+| **Block**                          | 1 (Places)                | Geospatial clustering (e.g., `hotspot_flag`), `distance_to_landmarks` (e.g., bars, transit hubs) | Partial redaction limits address precision.          |
+| **IUCR**                           | 1 (Places), 3 (Group Patterns) | Encode crime type hierarchies (e.g., `violent_flag`, `property_flag`).       | IUCR codes may change over time.                     |
+| **Primary Type**                   | 1 (Places), 3 (Group Patterns), 4 (Victims) | One-hot encoding for crime types (e.g., `THEFT`, `ASSAULT`).                  | Broad categories may obscure nuances (e.g., "theft" includes shoplifting and carjacking). |
+| **Location Description**           | 1 (Places), 4 (Victims)   | Categorical encoding (e.g., `residence`, `street`, `park`), `is_high_risk_location` flag. | Missing or vague entries (e.g., "other").            |
+| **Arrest**                         | 2 (Offenders)             | Temporal lag features (e.g., `prior_arrests_in_block`, `arrest_rate_per_district`). | Arrests ≠ crimes (biased policing may inflate counts). |
+| **Domestic**                       | 4 (Victims)               | Flag for `repeat_domestic_incidents` (if address/block is repeated).          | Underreporting of domestic incidents.                |
+| **Beat/District/Ward/Community Area** | 1 (Places), 3 (Group Patterns) | Aggregate crime counts by area (e.g., `crimes_per_1000_residents` using census data). | Community areas may proxy for race/income (ethical bias risk). |
+| **Latitude/Longitude**              | 1 (Places)                | Spatial grids (e.g., hexbin aggregates), `distance_to_police_stations`.        | Coordinate accuracy varies (e.g., redacted blocks).  |
+| **Year**                            | 3 (Group Patterns)        | Long-term trends (e.g., `crimes_year_over_year`).                             | Limited utility if using finer-grained `Date`.       |
