@@ -26,7 +26,7 @@ The main difference between them are:
 | **IUCR**                           | 1 (Places), 3 (Group Patterns) | Encode crime type hierarchies (e.g., `violent_flag`, `property_flag`).       | IUCR codes may change over time.                     |
 | **Primary Type**                   | 1 (Places), 3 (Group Patterns), 4 (Victims) | One-hot encoding for crime types (e.g., `THEFT`, `ASSAULT`).                  | Broad categories may obscure nuances (e.g., "theft" includes shoplifting and carjacking). |
 | **Location Description**           | 1 (Places), 4 (Victims)   | Categorical encoding (e.g., `residence`, `street`, `park`), `is_high_risk_location` flag. | Missing or vague entries (e.g., "other").            |
-| **Arrest**                         | 2 (Offenders)             | Temporal lag features (e.g., `prior_arrests_in_block`, `arrest_rate_per_district`). | Arrests ≠ crimes (biased policing may inflate counts). |
+| **Arrest**                         | 2 (Offenders)             | Temporal lag features (e.g., `prior_arrests_in_block`, `arrest_rate_per_district`). | Arrests $\neq$ crimes (biased policing may inflate counts). |
 | **Domestic**                       | 4 (Victims)               | Flag for `repeat_domestic_incidents` (if address/block is repeated).          | Underreporting of domestic incidents.                |
 | **Beat/District/Ward/Community Area** | 1 (Places), 3 (Group Patterns) | Aggregate crime counts by area (e.g., `crimes_per_1000_residents` using census data). | Community areas may proxy for race/income (ethical bias risk). |
 | **Latitude/Longitude**              | 1 (Places)                | Spatial grids (e.g., hexbin aggregates), `distance_to_police_stations`.        | Coordinate accuracy varies (e.g., redacted blocks).  |
@@ -59,21 +59,19 @@ The main difference between them are:
 #### 1. reaction-diffusion model
 In a discrete time model, taken *broken window effect* into consideration, we have
 \[\begin{equation}
-    \begin{equation}
     B_s(t + \delta t) = \left[ B_s(t) + \frac{\eta \ell^2}{z} \Delta B_s(t) \right] (1 - \omega \delta t) + \theta E_s(t)
-    \end{equation}
 \end{equation}\]
-where \(B_s(t)\) is a dynamic value models the risk of a site being attacked at time \(t\). \(\omega\) sets a time scale over which repeat victimizations are most likely to occur, and \(\theta\) is a multiplier of \(E_s(t)\), which is the number of burglary events that occurred at site \(s\) since time \(t\). \(0 \leq \eta \leq 1\) measures the significance of neighbor effect. \(l\) is the size of grid, \(z\) is the number of sites \(s^{'}\)neighoring \(s\) .\(\Delta\) is the discrete Laplacian, whereby
-\[\begin{equation}\begin{equation}
+where $B_s(t)$ is a dynamic value models the risk of a site being attacked at time $t$. $\omega$ sets a time scale over which repeat victimizations are most likely to occur, and $\theta$ is a multiplier of $E_s(t)$, which is the number of burglary events that occurred at site $s$ since time $t$. $0 \leq \eta \leq 1$ measures the significance of neighbor effect. $l$ is the size of grid, $z$ is the number of sites $s^{'}$neighoring $s$ .$\Delta$ is the discrete Laplacian, whereby
+\[\begin{equation}
     \Delta B_s(t) = \frac{1}{\ell^2} \left( \sum_{s' \sim s} B_{s'}(t) - z B_s(t) \right)
-\end{equation}\end{equation}\]
+\end{equation}\]
 From the discrete model, we form the difference quotient:
 
 \[\begin{equation}
 \frac{B_s(t + \delta t) - B(t)}{\delta t}
 \end{equation}\]
 
-and take the limit as \(\ell\) and \(\delta t\) approach 0 to arrive at the differential equation
+and take the limit as $\ell$ and $\delta t$ approach 0 to arrive at the differential equation
 
 \[\begin{equation}
 \frac{\partial B}{\partial t} = \frac{\eta D}{z} \nabla^2 B - \omega B + \epsilon D \rho A.
@@ -85,15 +83,15 @@ Here we have denoted
 D = \frac{\ell^2}{\delta t}, \quad \epsilon = \theta \delta t, \quad \rho(s, t) = \frac{n_s(t)}{\ell^2},
 \end{equation}\]
 
-and \(\rho\) is the density of criminal agents
+and $\rho$ is the density of criminal agents
 
 \[\begin{equation}
 \frac{\partial \rho}{\partial t} = \frac{D}{z} \nabla \cdot \left[ \nabla \rho - \frac{2\rho}{A} \nabla A \right] - \rho A + \gamma,
 \end{equation}\]
 
-where offenders exit the system at the rate \(\rho A\) and are reintroduced at the constant rate \(\gamma = \Gamma / \ell^2\). 
+where offenders exit the system at the rate $\rho A$ and are reintroduced at the constant rate $\gamma = \Gamma / \ell^2$. 
 
-The PDE for \(\rho\) is obtained by a difference quotient for \( n_s(t) \), using the equation
+The PDE for $\rho$ is obtained by a difference quotient for $ n_s(t) $, using the equation
 
 \[\begin{equation}
 n_s(t + \delta t) = A_s \sum_{s' \sim s} \frac{n_{s'}(t)(1 - p_{s'}(t))}{T_{s'}(t)} + \Gamma \delta t.
@@ -103,17 +101,17 @@ where
 \[\begin{equation}
     T_{s^{'}} = \sum_{s^{''} \sim s^{'}} A_{s^{''}}(t)
 \end{equation}\]
-which simply means that any agents that are present at \(s\) after one time step must have either arrived from a neighboring site after having not committed a crime there, or have been generated at \(s\) at rate \(\Gamma\). 
+which simply means that any agents that are present at $s$ after one time step must have either arrived from a neighboring site after having not committed a crime there, or have been generated at $s$ at rate $\Gamma$. 
 
 #### 2. Using EM algorithm in ETAS model
-ETAS model assumes a continuous time, discrete space(square grids) problem. It supposes that each event generates \(N \sim Possion(\theta)\) direct offspring events.
-In this model, policing areas are discretized into square boxes. The probabilistic rate of events in box \( n \) at time \( t \) is defined to be
+ETAS model assumes a continuous time, discrete space(square grids) problem. It supposes that each event generates $N \sim Possion(\theta)$ direct offspring events.
+In this model, policing areas are discretized into square boxes. The probabilistic rate of events in box $n$ at time $t$ is defined to be
 
 \[\begin{equation}
 \lambda_n(t) = \mu_n + \sum_{t_n^i < t} \theta \omega e^{-\omega (t - t_n^i)},
 \end{equation}\]
 
-where \( t_n^i \) are the times of events in box \( n \) in the history of the process. The background rate \( \mu \) is a (nonparametric histogram) estimate of a stationary Poisson process.
+where $t_n^i$ are the times of events in box $n$ in the history of the process. The background rate $\mu$ is a (nonparametric histogram) estimate of a stationary Poisson process.
 
 The expectation, or E-step, sets
 
@@ -121,7 +119,7 @@ The expectation, or E-step, sets
 p_n^{ij} = \frac{\theta \omega e^{-\omega (t_n^i - t_n^j)}}{\lambda_n(t_n^j)}, \quad p_n^j = \frac{\mu_n}{\lambda_n(t_n^j)},
 \end{equation}\]
 
-where \( \theta \omega e^{-\omega t} \) is called **the triggering kernel** that models "near-repeat" or "contagion" effects in crime data.
+where $\theta \omega e^{-\omega t}$ is called **the triggering kernel** that models "near-repeat" or "contagion" effects in crime data.
 
 The maximization, or M-step, sets
 
@@ -137,7 +135,7 @@ The maximization, or M-step, sets
 \mu = \frac{\sum_n \sum_j p_n^j}{T},
 \end{equation}\]
 
-where \( T \) is the length of the time window of observation.
+where $T$ is the length of the time window of observation.
 A more detailed derivation can be find [here](https://github.com/arun-ramamurthy/pred-pol/blob/master/doc/Rederivation%20of%20Mohler%20et%20al.pdf).
 
 ## Review of the Modelling Approaches
