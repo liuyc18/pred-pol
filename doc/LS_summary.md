@@ -110,4 +110,12 @@ A more detailed derivation can be find [here](https://github.com/arun-ramamurthy
     - Aggregated Rates: Crime counts per area/time window, arrest counts per area/time window, repeat domestic incident flags
 
 ## Evaluation Metrics and Their Appropriateness
-TODO
+PredPol and other systems employ a range of quantitative and qualitative methods to assess its predictive policing system.
+-   Prediction Success Rate: gauges the proportion of actual crimes that occur within the areas designated as crime hot spots. For example, a 2015 study by PredPol claimed that its model accurately predicted 4.7% of crimes and asserted it was twice as accurate as traditional methods.
+-   Changes in Crime Rate: Based on historical record, the Santa Cruz Police Department observed an 11% reduction in residential burglaries and a 27% reduction in robberies after deploying PredPol.
+-   False Positive/Negative Rates: Simulation studies suggest that feedback loops may cause the system to over-predict crime in certain neighborhoods. For example, an analysis of drug-related crime forecasts in Oakland found that communities of color were misidentified at roughly twice the rate of predominantly white areas.
+
+However, these metrics face serious problems due to potential data bias, lack of algorithmic transparency, and broader concerns about social justice.
+-   Lack of Transparency: Limited transparency exacerbates concerns about policing inequities, particularly among marginalized groups that have historically experienced disproportionate surveillance. 
+-   Oversimplification of Social Complexities: By focusing primarily on spatial and temporal factors, predictive tools may overlook deeper social drivers of crime, such as poverty and educational inequality.
+-   Short-Term Gains vs. Long-Term Consequences: Even when short-term crime rates decline, community trust can suffer, potentially heightening tensions between law enforcement and the public in the long run.
