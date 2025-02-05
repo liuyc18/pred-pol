@@ -2,7 +2,14 @@
 
 ## Sketch
 - Literature survey
+doc/literature_survey.md is the first version of the literature survey, contains many details, need to be simplified to max two pages as required.
+doc/LS_summary.md is the summary of the literature survey, which is roughly two pages. Further work should be done from this version.
+
 - Exploratory data analytics & preprocessing
+EDA is based on Tableau Public. 
+Download the file and open it with Tableau Public. The file is around 400mb
+Google drive link: https://drive.google.com/file/d/1r96RIkpor7FvESTboG7uQf5M_FjkcTXL/view?usp=sharing
+
 - Model development & evaluation
 - Report
 
