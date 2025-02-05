@@ -104,10 +104,10 @@ where $T$ is the length of the time window of observation.
 A more detailed derivation can be find [here](https://github.com/arun-ramamurthy/pred-pol/blob/master/doc/Rederivation%20of%20Mohler%20et%20al.pdf).
 
 ## Feature Engineering Techniques
-    - Temporal Features: Day-of-week, time-of-day, seasonality flags like holidays
-    - Spatial Features: Clusters, proximity measures, geohashes, distance to police stations, environmental factors like bars/hotspots
-    - Crime Type Encoding: One-hot encoding, classify by severity, further classify to high/low risk of arresting
-    - Aggregated Rates: Crime counts per area/time window, arrest counts per area/time window, repeat domestic incident flags
+- Temporal Features: Day-of-week, time-of-day, seasonality flags like holidays
+- Spatial Features: Clusters, proximity measures, geohashes, distance to police stations, environmental factors like bars/hotspots
+- Crime Type Encoding: One-hot encoding, classify by severity, further classify to high/low risk of arresting
+- Aggregated Rates: Crime counts per area/time window, arrest counts per area/time window, repeat domestic incident flags
 
 ## Evaluation Metrics and Their Appropriateness
 PredPol and other systems employ a range of quantitative and qualitative methods to assess its predictive policing system.
